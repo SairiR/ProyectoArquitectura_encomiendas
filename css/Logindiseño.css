@@ -1,0 +1,164 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 06/07/2018, 18:11:46
+    Author     : Sairi
+*/
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    box-sizing: border-box;
+    
+}
+
+body{
+    /*background: #DEDEDE;*/
+    background: url(../img/login.png);
+    display: flex;
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+form{
+    margin: auto;
+    /*background: url(../img/carrito.jpg);*/
+
+}
+
+.form-general{
+    margin: auto;
+    width: 50%;
+    max-width: 500px;
+    background: #F3F3F3;
+    /*background: url(../img/icono-carrito-compras.png);*/
+    padding: 30px;
+    border-radius: 5px;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.2);
+
+}
+.form-general .toggle {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 100px;
+    height: 30px;
+    font-size: 13px;
+    /*line-height: 26px;*/
+    text-align: center;
+    border-radius: 8px;
+    background: #FFB940;
+    color: white;
+    cursor: pointer;
+    transition: all .6s ease;
+    padding: 2px;
+}
+.form-general .form label[id="img1"]{
+    position: absolute;
+    top: 85px;
+    left: -80px;
+    transform: scale(0.10);
+}
+
+.form-general .form label[id="img2"]{
+    position: absolute;
+    top: -160px;
+    left: -310px;
+    transform: scale(0.03);
+}
+
+.form-general label[id="img3"]{
+    position: absolute;
+    top: -70px;
+    left: 50px;
+    transform: scale(0.30);
+}
+
+.form-general .toggle:hover {
+ transform: scale( 0.95);
+ background: #F9A825;
+}
+
+.form-general .toggle span {
+    letter-spacing: 1px;
+}
+
+
+.form-general h2[id="log"] {
+    margin: 0 0 28px 0;
+    font-size: 20px;
+    margin-bottom: 100px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.form-general h2[id="crear"] {
+    margin: 0 0 28px 0;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+
+.form-general input[type="text"],
+.form-general input[type="password"],
+.form-general input[type="email"],
+.form-general input[type="date"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.form-general input[type="text"]:focus,
+.form-general input[type="password"]:focus,
+.form-general input[type="date"]:focus,
+.form-general input[type="email"]:focus {
+    border-bottom: 4px solid #BDB76B;
+}
+
+
+.form-general input[type="submit"] {
+    background: linear-gradient(#FFDA63,#FFB940 );
+    color: #FFF;
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 0;
+    border: none;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+
+.form-general input[type="submit"]:hover {
+  transform: scale( 0.95); 
+  background: #F9A825;
+}
+
+.form-general .form {
+    display: none;
+    padding: 40px;
+ 
+}
+
+.form-general .form:nth-child(2) {
+    display: block;
+}
