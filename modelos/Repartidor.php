@@ -14,6 +14,7 @@
 
 class Repartidor {
    
+    private $idRepartidor;
     private $nombre;
     private $apellido;
     private $telefono;
@@ -24,7 +25,8 @@ class Repartidor {
     private $rol;
     
     
-    function __construct($nombre, $apellido, $telefono, $fechaNac, $direccion, $correo, $clave, $rol) {
+    function __construct($idRepartidor, $nombre, $apellido, $telefono, $fechaNac, $direccion, $correo, $clave, $rol) {
+        $this->idRepartidor = $idRepartidor;
         $this->nombre = $nombre;
         $this->apellido = $apellido;
         $this->telefono = $telefono;
@@ -35,8 +37,15 @@ class Repartidor {
         $this->rol = $rol;
     }
 
-        
-    function getNombre() {
+    function getIdRepartidor() {
+        return $this->idRepartidor;
+    }
+
+    function setIdRepartidor($idRepartidor) {
+        $this->idRepartidor = $idRepartidor;
+    }
+
+        function getNombre() {
         return $this->nombre;
     }
 

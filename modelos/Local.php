@@ -14,6 +14,7 @@
 
 class Local {
 
+    private $idLocal;
     private $seccion;
     private $nombre;
     private $direccion;
@@ -23,7 +24,8 @@ class Local {
     private $horario;
     private $rol;
     
-    function __construct($seccion, $nombre, $direccion, $telefono, $correo, $clave, $horario, $rol) {
+    function __construct($idLocal, $seccion, $nombre, $direccion, $telefono, $correo, $clave, $horario, $rol) {
+        $this->idLocal = $idLocal;
         $this->seccion = $seccion;
         $this->nombre = $nombre;
         $this->direccion = $direccion;
@@ -32,10 +34,19 @@ class Local {
         $this->clave = $clave;
         $this->horario = $horario;
         $this->rol = $rol;
-
     }
     
-    function getSeccion() {
+    
+
+    function getIdLocal() {
+        return $this->idLocal;
+    }
+
+    function setIdLocal($idLocal) {
+        $this->idLocal = $idLocal;
+    }
+
+        function getSeccion() {
         return $this->seccion;
     }
 

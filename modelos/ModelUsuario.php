@@ -3,7 +3,10 @@
 include_once '../modelos/Cliente.php';
 include_once '../modelos/UsuarioDTO.php';
 include_once '../modelos/Local.php';
-//include_once './Producto.php';
+include_once '../modelos/Producto.php';
+include_once '../modelos/Pedido.php';
+include_once '../modelos/Pedido_Repartidor.php';
+include_once '../modelos/Pago.php';
 //include_once './ProductoDTO.php';
 //include_once './Proveedor.php';
 //include_once './ProveedorDTO.php';
@@ -92,8 +95,8 @@ class ModelUsuario {
         database::disconnet();
     }
     
-     public function crearCliente($nombre, $apellido, $telefono, $direccion,$fechaNac, $correo, $clave, $rol){
-        $cliente=new Cliente($nombre, $apellido, $telefono, $direccion, $fechaNac, $correo, $clave, $rol);
+     public function crearCliente($idCliente, $nombre, $apellido, $telefono, $direccion,$fechaNac, $correo, $clave, $rol){
+        $cliente=new Cliente($idCliente, $nombre, $apellido, $telefono, $direccion, $fechaNac, $correo, $clave, $rol);
         $this->guardarCliente($cliente);
         return $cliente;
     }
@@ -114,8 +117,8 @@ class ModelUsuario {
         database::disconnet();
     }
     
-      public function crearRepartidor($nombre, $apellido, $telefono, $fechaNac, $direccion, $correo, $clave, $rol){
-        $repartidor=new Repartidor($nombre, $apellido, $telefono, $fechaNac, $direccion, $correo, $clave, $rol);
+      public function crearRepartidor($idRepartidor, $nombre, $apellido, $telefono, $fechaNac, $direccion, $correo, $clave, $rol){
+        $repartidor=new Repartidor($idRepartidor, $nombre, $apellido, $telefono, $fechaNac, $direccion, $correo, $clave, $rol);
         $this->guardarRepartidor($repartidor);
         
         return $repartidor;
@@ -137,9 +140,9 @@ class ModelUsuario {
         database::disconnet();
     }
     
-    public function crearLocal($seccion, $nombre, $direccion, $telefono, $correo, $clave, $horario, $rol){
+    public function crearLocal($idlocal, $seccion, $nombre, $direccion, $telefono, $correo, $clave, $horario, $rol){
         
-        $proveedor=new Local($seccion, $nombre, $direccion, $telefono, $correo, $clave, $horario, $rol);
+        $proveedor=new Local($idlocal, $seccion, $nombre, $direccion, $telefono, $correo, $clave, $horario, $rol);
 
         $this->guardarLocal($proveedor);
 
@@ -186,6 +189,7 @@ class ModelUsuario {
         $listadocli=array();
         foreach ($resultado as $res){
             $cli=new Cliente(
+                                 $res['id_Cliente'],
                                  $res['nombre_Cliente'],
                                  $res['apellido_Cliente'],
                                  $res['telefono_Cliente'],
@@ -207,6 +211,7 @@ class ModelUsuario {
         $listadorep=array();
         foreach ($resultado as $res){
             $rep=new Repartidor(
+                                 $res['idRepartidor'],
                                  $res['nombreRepartidor'],
                                  $res['apellidoRepartidor'],
                                  $res['telefonoRepartidor'],
@@ -228,6 +233,7 @@ class ModelUsuario {
         $listadoloc=array();
         foreach ($resultado as $res){
             $loc=new Local(
+                                 $res['idLocal'],
                                  $res['seccion'],
                                  $res['nombreLocal'],
                                  $res['direccionLocal'],
@@ -241,50 +247,816 @@ class ModelUsuario {
         database::disconnet();
         return $listadoloc;
      }
-    
-//    public function crearProducto($idProveedor, $tipoProducto, $tipoMadera, $color, $precioCompra, $precioVenta, $cantidad){
-//        
-//        $producto=new ProductoDTO($idProveedor, $tipoProducto, $tipoMadera, $color, $precioCompra, $precioVenta, $cantidad);
-//        $this->guardarProducto($producto);
-//        return $producto;
-//    }
-//
-//    public function guardarProducto($producto) {
-//        $pdo = database::connect();
-//        $sql = 'insert into productos(idProveedor,tipoProducto, tipoMadera, color, precioCompra, precioVenta,cantidad) values(?,?,?,?,?,?,?)';
-//        $consulta = $pdo->prepare($sql);
-//        $consulta->execute(array(
-//        $producto->getIdProveedor(),
-//        $producto->getTipoProducto(),
-//        $producto->getTipoMadera(),
-//        $producto->getColor(),
-//        $producto->getPrecioCompra(),
-//        $producto->getPrecioVenta(),
-//        $producto->getCantidad())
-//        );
-//        database::disconnet();
-//    }
+     public function getLocales($correo) {
+        //Obtenemos la informacion del producto especifico:
+        $pdo = database::connect();
 
-//     public function consultarProductos() {
+        //Utilizamos parametros para la consulta:
+        $sql = "select * from local where correoLocal=?";
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos y pasamos los parametros para la consulta:
+        $consulta->execute(array($correo));
+        //Extraemos el registro especifico:
+        $dato = $consulta->fetch(PDO::FETCH_ASSOC);
+        //Transformamos el registro obtenido a objeto:
+        $local = new Local($dato['idLocal'],$dato['seccion'], $dato['nombreLocal'],$dato['direccionLocal'], $dato['telefonoLocal'], 
+                $dato['correoLocal'], $dato['claveLocal'], $dato['horarioLocal'],"local");
+        database::disconnet();
+        return $local;
+    }
+    
+    
+    public function crearProducto($idProducto, $idProveedor, $nombreProd, $descripcionProd, $precioVenta, $cantidadProd){
+        
+        $producto=new Producto($idProducto, $idProveedor, $nombreProd, $descripcionProd, $precioVenta, $cantidadProd);
+        $this->guardarProducto($producto);
+        return $producto;
+    }
+
+    public function guardarProducto($producto) {
+        $pdo = database::connect();
+        $sql = 'INSERT INTO producto(idproveedor, nombreProd, descripcionProd, precioProd, cantidadProd) values(?,?,?,?,?)';
+        $consulta = $pdo->prepare($sql);
+        $consulta->execute(array(
+        $producto->getIdLocal(),
+        $producto->getNombreProd(),
+        $producto->getDescripcionProd(),
+        $producto->getPrecioVenta(),
+        $producto->getCantidad())
+        );
+        database::disconnet();
+    }
+
+     public function consultarProductos() {
+        $pdo= database::connect();
+        $sql='select * from producto';
+        $resultado=$pdo->query($sql);
+        //transform de fil  a obj
+        $listadoprod=array();
+        foreach ($resultado as $res){
+            $prod=new Producto($res['idproducto'],
+                                 $res['idproveedor'],
+                                 $res['nombreProd'],
+                                 $res['descripcionProd'],
+                                 $res['precioProd'],
+                                 $res['cantidadProd']);
+            array_push($listadoprod, $prod);
+        }
+        database::disconnet();
+        return $listadoprod;
+    }
+     public function consultarPedidos() {
+        $pdo= database::connect();
+        $sql='select * from pedido';
+        $resultado=$pdo->query($sql);
+        //transform de fil  a obj
+        $listadoped=array();
+        foreach ($resultado as $res){
+            $ped=new Pedido($res['idpedido'],
+                                 $res['correo'],
+                                 $res['direccion'],
+                                 $res['idproducto'],
+                                 $res['idproveedor'],
+                                 $res['nombreProd'],
+                                 $res['descripcionProd'],
+                                 $res['precioProd'],
+                                 $res['cantidadProd'],
+                                 $res['precioTotal'],
+                                 $res['fechaPedido'],
+                                 $res['estado']);
+            array_push($listadoped, $ped);
+        }
+        database::disconnet();
+        return $listadoped;
+    }
+     public function consultarPedidosG() {
+        $pdo= database::connect();
+        $sql='SELECT pedido.idpedido, pedido.correo, pedido.direccion, local.nombreLocal, pedido.idproducto, pedido.nombreProd, pedido.descripcionProd, pedido.precioProd, pedido.cantidadProd, pedido.precioTotal, pedido.fechaPedido pedido.estado from pedido INNER JOIN local on pedido.idproveedor=local.idLocal';
+        $resultado=$pdo->query($sql);
+        //transform de fil  a obj
+        $listadoped=array();
+        foreach ($resultado as $res){
+            $ped=new Pedido($res['idpedido'],
+                                 $res['correo'],
+                                 $res['direccion'],
+                                 $res['idproducto'],
+                                 $res['nombreLocal'],
+                                 $res['nombreProd'],
+                                 $res['descripcionProd'],
+                                 $res['precioProd'],
+                                 $res['cantidadProd'],
+                                 $res['precioTotal'],
+                                 $res['fechaPedido'],
+                                 $res['estado']);
+            array_push($listadoped, $ped);
+        }
+        database::disconnet();
+        return $listadoped;
+    }
+    
+//    public function consultarPedidos_RepG() {
 //        $pdo= database::connect();
-//        $sql='select * from productos';
+//        $sql='SELECT pedido.idpedido, pedido.correo, pedido.direccion, local.nombreLocal, pedido.idproducto, pedido.nombreProd, pedido.descripcionProd, pedido.precioProd, pedido.cantidadProd, pedido.precioTotal, pedido.fechaPedido, pedido.estado from pedido INNER JOIN local on pedido.idproveedor=local.idLocal';
+//        $resultado=$pdo->query($sql);
+//        //transform de fil  a obj
+//        $listadoped=array();
+//        foreach ($resultado as $res){
+//            $ped=new Pedido($res['idpedido'],
+//                                 $res['correo'],
+//                                 $res['direccion'],
+//                                 $res['idproducto'],
+//                                 $res['nombreLocal'],
+//                                 $res['nombreProd'],
+//                                 $res['descripcionProd'],
+//                                 $res['precioProd'],
+//                                 $res['cantidadProd'],
+//                                 $res['precioTotal'],
+//                                 $res['fechaPedido'],
+//                                 $res['estado']);
+//            array_push($listadoped, $ped);
+//        }
+//        database::disconnet();
+//        return $listadoped;
+//    }
+    //este funciona bien
+     public function consultarPedidosC($correo) {
+        $pdo= database::connect();
+        $sql='SELECT pedido.idpedido, pedido.correo, pedido.direccion, local.nombreLocal, pedido.idproducto, pedido.nombreProd, pedido.descripcionProd, pedido.precioProd, pedido.cantidadProd, pedido.precioTotal, pedido.fechaPedido from pedido INNER JOIN local on pedido.idproveedor=local.idLocal and pedido.correo="'.$correo.'"';
+        $resultado=$pdo->query($sql);
+        //transform de fil  a obj
+        $listadoped=array();
+        foreach ($resultado as $res){
+            $ped=new Pedido($res['idpedido'],
+                                 $res['correo'],
+                                 $res['direccion'],
+                                 $res['idproducto'],
+                                 $res['nombreLocal'],
+                                 $res['nombreProd'],
+                                 $res['descripcionProd'],
+                                 $res['precioProd'],
+                                 $res['cantidadProd'],
+                                 $res['precioTotal'],
+                                 $res['fechaPedido'],
+                                 $res['estado']);
+            array_push($listadoped, $ped);
+        }
+        database::disconnet();
+        return $listadoped;
+    }
+     public function consultarPedidosRep($correo) {
+        $pdo= database::connect();
+        $sql='SELECT pedido_repartidor.idpedido, pedido_repartidor.correo, pedido_repartidor.direccion, local.nombreLocal, pedido_repartidor.idproducto, pedido_repartidor.nombreProd, pedido_repartidor.descripcionProd, pedido_repartidor.precioProd, pedido_repartidor.cantidadProd, pedido_repartidor.precioTotal, pedido_repartidor.fechaPedido, pedido_repartidor.estado from pedido_repartidor INNER JOIN repartidor on repartidor.idRepartidor=pedido_repartidor.idRepartidor INNER JOIN local on pedido_repartidor.idLocal=local.idLocal and repartidor.correoRepartidor="'.$correo.'"';
+        $resultado=$pdo->query($sql);
+        //transform de fil  a obj
+        $listadoped=array();
+        foreach ($resultado as $res){
+            $ped=new Pedido($res['idpedido'],
+                                 $res['correo'],
+                                 $res['direccion'],
+                                 $res['idproducto'],
+                                 $res['nombreLocal'],
+                                 $res['nombreProd'],
+                                 $res['descripcionProd'],
+                                 $res['precioProd'],
+                                 $res['cantidadProd'],
+                                 $res['precioTotal'],
+                                 $res['fechaPedido'],
+                                 $res['estado']);
+            array_push($listadoped, $ped);
+        }
+        database::disconnet();
+        return $listadoped;
+    }
+     public function consultarProductosL($idLocal) {
+         $pdo= database::connect();
+        $sql='select * from producto where idproveedor="'.$idLocal.'"';
+        $resultado=$pdo->query($sql);
+        //transform de fil  a obj
+        $listadoprod=array();
+        foreach ($resultado as $res){
+            $prod=new Producto($res['idproducto'],
+                                 $res['idproveedor'],
+                                 $res['nombreProd'],
+                                 $res['descripcionProd'],
+                                 $res['precioProd'],
+                                 $res['cantidadProd']);
+            array_push($listadoprod, $prod);
+        }
+        database::disconnet();
+        return $listadoprod;
+    }
+//     public function consultarPedido_Rep($idpedido) {
+//         $pdo= database::connect();
+//        $sql='SELECT pedido.idpedido, pedido.correo, pedido.direccion, local.nombreLocal, pedido.idproducto, pedido.nombreProd, pedido.descripcionProd, pedido.precioProd, pedido.cantidadProd, pedido.precioTotal, pedido.fechaPedido, pedido.estado from pedido INNER JOIN local on pedido.idproveedor=local.idLocal and pedido.idpedido="'.$idpedido.'"';
 //        $resultado=$pdo->query($sql);
 //        //transform de fil  a obj
 //        $listadoprod=array();
 //        foreach ($resultado as $res){
-//            $prod=new Producto($res['idProducto'],
-//                                 $res['idProveedor'],
-//                                 $res['tipoProducto'],
-//                                 $res['tipoMadera'],
-//                                 $res['color'],
-//                                 $res['precioCompra'],
-//                                 $res['precioVenta'],
-//                                 $res['cantidad']);
+//            $prod=new Producto($res['idproducto'],
+//                                 $res['idproveedor'],
+//                                 $res['nombreProd'],
+//                                 $res['descripcionProd'],
+//                                 $res['precioProd'],
+//                                 $res['cantidadProd']);
 //            array_push($listadoprod, $prod);
 //        }
 //        database::disconnet();
 //        return $listadoprod;
 //    }
+     public function consultarProductosxL($correo) {
+         $pdo= database::connect();
+        $sql='select producto.idproducto, producto.idproveedor, producto.nombreProd, producto.descripcionProd, producto.precioProd, producto.cantidadProd from producto INNER JOIN local on producto.idproveedor=local.idLocal and local.correoLocal="'.$correo.'"';
+        $resultado=$pdo->query($sql);
+        //transform de fil  a obj
+        $listadoprod=array();
+        foreach ($resultado as $res){
+            $prod=new Producto($res['idproducto'],
+                                 $res['idproveedor'],
+                                 $res['nombreProd'],
+                                 $res['descripcionProd'],
+                                 $res['precioProd'],
+                                 $res['cantidadProd']);
+            array_push($listadoprod, $prod);
+        }
+        database::disconnet();
+        return $listadoprod;
+    }
+     public function consultarItems() {
+        $pdo= database::connect();
+        $sql="select * from item";
+        $resultado=$pdo->query($sql);
+        //transform de fil  a obj
+        $listadoitem=array();
+        foreach ($resultado as $res){
+            $prod=new Item($res['idproducto'],
+                                 $res['idproveedor'],
+                                 $res['nombreProd'],
+                                 $res['descripcionProd'],
+                                 $res['precioProd'],
+                                 $res['cantidadProd'],
+                                 $res['precioTotal']);
+            array_push($listadoitem, $prod);
+        }
+        database::disconnet();
+        return $listadoitem;
+    }
+     public function getProductoxCod($codigo) {
+        //Obtenemos la informacion del producto especifico:
+        $pdo = Database::connect();
+        //Utilizamos parametros para la consulta:
+        $sql = "select * from producto where idproducto=?";
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos y pasamos los parametros para la consulta:
+        $consulta->execute(array($codigo));
+        //Extraemos el registro especifico:
+        $dato = $consulta->fetch(PDO::FETCH_ASSOC);
+        //Transformamos el registro obtenido a objeto:
+        $producto = new Producto();
+            $producto->setCodigo($dato['idproducto']);
+            $producto->setIdLocal($dato['idproveedor']);
+            $producto->setNombre($dato['nombreProd']);
+            $producto->setDescripcionProd($dato['descripcionProd']);
+            $producto->setPrecioVenta($dato['precioProd']);
+            $producto->setCantidad($dato['cantidadProd']);
+        Database::disconnect();
+        return $producto;
+    }
+//     public function getPedidos_Rep($idPedido) {
+//        //Obtenemos la informacion del producto especifico:
+//        $pdo = Database::connect();
+//        //Utilizamos parametros para la consulta:
+//        $sql='SELECT pedido.idpedido, pedido.correo, pedido.direccion, local.nombreLocal, pedido.idproducto, pedido.nombreProd, pedido.descripcionProd, pedido.precioProd, pedido.cantidadProd, pedido.precioTotal, pedido.fechaPedido, pedido.estado from pedido INNER JOIN local on pedido.idproveedor=local.idLocal and pedido.idpedido='.$idPedido.'';
+//
+//        $consulta = $pdo->prepare($sql);
+//        //Ejecutamos y pasamos los parametros para la consulta:
+//        $consulta->execute(array($idPedido));
+//        //Extraemos el registro especifico:
+//        $dato = $consulta->fetch(PDO::FETCH_ASSOC);
+//        //Transformamos el registro obtenido a objeto:
+//        $producto = new Pedido_Repartidor("",$dato['idpedido'], $dato['correo'], $dato['direccion'], $dato['idproducto'], $dato['idproveedor'], $dato['nombreProd'], $dato['descripcionProd'], 
+//                $dato['precioProd'], $dato['cantidadProd'], $dato['precioTotal'], $dato['fechaPedido']);
+//        Database::disconnect();
+//        return $producto;
+//    }
+    
+    public function consultarPedidos_RepG($idPedido) {
+        $pdo= database::connect();
+        $sql='SELECT pedido.idpedido, pedido.correo, pedido.direccion, local.nombreLocal, pedido.idproducto, pedido.nombreProd, pedido.descripcionProd, pedido.precioProd, pedido.cantidadProd, pedido.precioTotal, pedido.fechaPedido, pedido.estado from pedido INNER JOIN local on pedido.idproveedor=local.idLocal and pedido.idpedido=?';
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos y pasamos los parametros para la consulta:
+        $consulta->execute(array($idPedido));
+        //Extraemos el registro especifico:
+        $res = $consulta->fetch(PDO::FETCH_ASSOC);
+        //Transformamos el registro obtenido a objeto:
+        $pedido = new Pedido($res['idpedido'],
+                                 $res['correo'],
+                                 $res['direccion'],
+                                 $res['idproducto'],
+                                 $res['nombreLocal'],
+                                 $res['nombreProd'],
+                                 $res['descripcionProd'],
+                                 $res['precioProd'],
+                                 $res['cantidadProd'],
+                                 $res['precioTotal'],
+                                 $res['fechaPedido'],
+                                 $res['estado']);
+     
+        database::disconnet();
+        return $pedido;
+}
+
+     public function consultarProductosxId($correo) {
+        $pdo= database::connect();
+        $sql='select producto.idproducto, producto.idproveedor, producto.nombreProd, producto.descripcionProd, producto.precioProd, producto.cantidadProd from local inner join producto on local.idLocal=producto.idproveedor where correoLocal=?';
+        $resultado=$pdo->query($sql);
+        //transform de fil  a obj
+        $listadoprod=array();
+        foreach ($resultado as $res){
+            $prod=new Producto($res['idproducto'],
+                                 $res['idproveedor'],
+                                 $res['nombreProd'],
+                                 $res['descripcionProd'],
+                                 $res['precioProd'],
+                                 $res['cantidadProd']);
+            array_push($listadoprod, $prod);
+        }
+        database::disconnet();
+        return $listadoprod;
+    }
+    
+     public function eliminarUsuario($correo) {
+//        //Preparamos la conexion a la bdd:
+        $pdo = database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "DELETE FROM usuarios WHERE correo=?";
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos la sentencia incluyendo a los parametros:
+        $consulta->execute(array($correo));
+        database::disconnet();
+    }
+     public function eliminarCliente($correo) {
+//        //Preparamos la conexion a la bdd:
+        $pdo = database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "DELETE FROM cliente WHERE correo_Cliente=?";
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos la sentencia incluyendo a los parametros:
+        $consulta->execute(array($correo));
+        database::disconnet();
+    }
+     public function eliminarRepartidor($correo) {
+//        //Preparamos la conexion a la bdd:
+        $pdo = database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "DELETE FROM repartidor WHERE correoRepartidor=?";
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos la sentencia incluyendo a los parametros:
+        $consulta->execute(array($correo));
+        database::disconnet();
+    }
+     public function eliminarLocal($correo) {
+//        //Preparamos la conexion a la bdd:
+        $pdo = database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "DELETE FROM local WHERE correoLocal=?";
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos la sentencia incluyendo a los parametros:
+        $consulta->execute(array($correo));
+        database::disconnet();
+    }
+     public function eliminarProducto($idProducto) {
+        //Preparamos la conexion a la bdd:
+        $pdo = database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "DELETE FROM producto WHERE idproducto=?";
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos la sentencia incluyendo a los parametros:
+        $consulta->execute(array($idProducto));
+        database::disconnet();
+    }
+     public function eliminarPedido($idPedido) {
+        //Preparamos la conexion a la bdd:
+        $pdo = database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "DELETE FROM pedido WHERE idpedido=?";
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos la sentencia incluyendo a los parametros:
+        $consulta->execute(array($idPedido));
+        database::disconnet();
+    }
+    
+     public function getRepartidores() {
+        //obtenemos la informacion de la bdd:
+       $pdo= database::connect();
+        $sql='select * from repartidor';
+        $resultado=$pdo->query($sql);
+        //transform de fil  a obj
+        $listadorep=array();
+        foreach ($resultado as $res){
+            $rep=new Repartidor(
+                                 $res['idRepartidor'],
+                                 $res['nombreRepartidor'],
+                                 $res['apellidoRepartidor'],
+                                 $res['telefonoRepartidor'],
+                                 $res['fechaNacRepartidor'],
+                                 $res['direccion'],
+                                 $res['correoRepartidor'],
+                                 $res['contrasenaRepartidor'],
+                                 "repartidor");
+            array_push($listadorep, $rep);
+        }
+        database::disconnet();
+        return $listadorep;
+    }
+    //este se cambio
+    public function getPedido($idpedido) {
+        //Obtenemos la informacion del producto especifico:
+        $pdo = database::connect();
+
+        //Utilizamos parametros para la consulta:
+        $sql = "select * from pedido where idpedido=?";
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos y pasamos los parametros para la consulta:
+        $consulta->execute(array($idpedido));
+        //Extraemos el registro especifico:
+        $dato = $consulta->fetch(PDO::FETCH_ASSOC);
+        //Transformamos el registro obtenido a objeto:
+        $pedido = new Pedido($dato['idpedido'], $dato['correo'], $dato['direccion'], $dato['idproducto'], $dato['idproveedor'], $dato['nombreProd'], $dato['descripcionProd'], 
+                $dato['precioProd'], $dato['cantidadProd'], $dato['precioTotal'], $dato['fechaPedido'],$dato['estado']);
+        database::disconnet();
+        return $pedido;
+    }
+//    public function getPedido_Rep($idpedido) {
+//        //Obtenemos la informacion del producto especifico:
+//        $pdo = database::connect();
+//
+//        //Utilizamos parametros para la consulta:
+//        $sql = "select * from pedido_repartidor where idpedido=?";
+//        $consulta = $pdo->prepare($sql);
+//        //Ejecutamos y pasamos los parametros para la consulta:
+//        $consulta->execute(array($idpedido));
+//        //Extraemos el registro especifico:
+//        $dato = $consulta->fetch(PDO::FETCH_ASSOC);
+//        //Transformamos el registro obtenido a objeto:
+//        $pedido = new Pedido_Repartidor($dato['idpedido'], $dato['idRepartidor'], $dato['correo'], $dato['direccion'], $dato['idproducto'], $dato['idproveedor'], $dato['nombreProd'], $dato['descripcionProd'], 
+//                $dato['precioProd'], $dato['cantidadProd'], $dato['precioTotal'], $dato['fechaPedido'], $dato['estado']);
+//        database::disconnet();
+//        return $pedido;
+//    }
+    public function getProducto($idproducto) {
+        //Obtenemos la informacion del producto especifico:
+        $pdo = database::connect();
+
+        //Utilizamos parametros para la consulta:
+        $sql = "select * from producto where idproducto=?";
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos y pasamos los parametros para la consulta:
+        $consulta->execute(array($idproducto));
+        //Extraemos el registro especifico:
+        $dato = $consulta->fetch(PDO::FETCH_ASSOC);
+        //Transformamos el registro obtenido a objeto:
+        $producto = new Producto($dato['idproducto'], $dato['idproveedor'], $dato['nombreProd'], $dato['descripcionProd'], 
+                $dato['precioProd'], $dato['cantidadProd']);
+        database::disconnet();
+        return $producto;
+    }
+//    public function getPedido($idproducto) {
+//        //Obtenemos la informacion del producto especifico:
+//        $pdo = database::connect();
+//
+//        //Utilizamos parametros para la consulta:
+//        $sql = "select * from producto where idproducto=?";
+//        $consulta = $pdo->prepare($sql);
+//        //Ejecutamos y pasamos los parametros para la consulta:
+//        $consulta->execute(array($idproducto));
+//        //Extraemos el registro especifico:
+//        $dato = $consulta->fetch(PDO::FETCH_ASSOC);
+//        //Transformamos el registro obtenido a objeto:
+//        $producto = new Producto($dato['idproducto'], $dato['idproveedor'], $dato['nombreProd'], $dato['descripcionProd'], 
+//                $dato['precioProd'], $dato['cantidadProd']);
+//        database::disconnet();
+//        return $producto;
+//    }
+    public function getProductoxIdLoc($idlocal) {
+        //Obtenemos la informacion del producto especifico:
+        $pdo = database::connect();
+
+        //Utilizamos parametros para la consulta:
+        $sql = "select * from producto where idproveedor=?";
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos y pasamos los parametros para la consulta:
+        $consulta->execute(array($idlocal));
+        //Extraemos el registro especifico:
+        $dato = $consulta->fetch(PDO::FETCH_ASSOC);
+        //Transformamos el registro obtenido a objeto:
+        $producto = new Producto($dato['idproducto'], $dato['idproveedor'], $dato['nombreProd'], $dato['descripcionProd'], 
+                $dato['precioProd'], $dato['cantidadProd']);
+        database::disconnet();
+        return $producto;
+    }
+    public function getLocal($correo) {
+        //Obtenemos la informacion del producto especifico:
+        $pdo = database::connect();
+
+        //Utilizamos parametros para la consulta:
+        $sql = "select * from local where correoLocal=?";
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos y pasamos los parametros para la consulta:
+        $consulta->execute(array($correo));
+        //Extraemos el registro especifico:
+        $dato = $consulta->fetch(PDO::FETCH_ASSOC);
+        //Transformamos el registro obtenido a objeto:
+        $local = new Local($dato['idLocal'], $dato['seccion'], $dato['nombreLocal'], $dato['direccionLocal'], 
+                $dato['telefonoLocal'], $dato['correoLocal'], $dato['claveLocal'],$dato['horarioLocal'],"local");
+        database::disconnet();
+        return $local;
+    }
+    public function getUser($correo) {
+        //Obtenemos la informacion del producto especifico:
+        $pdo = database::connect();
+
+        //Utilizamos parametros para la consulta:
+        $sql = "select * from usuarios where correo=?";
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos y pasamos los parametros para la consulta:
+        $consulta->execute(array($correo));
+        //Extraemos el registro especifico:
+        $dato = $consulta->fetch(PDO::FETCH_ASSOC);
+        //Transformamos el registro obtenido a objeto:
+        $usuario = new UsuarioDTO($dato['correo'], $dato['clave'], $dato['rol']);
+        database::disconnet();
+        return $usuario;
+    }
+    public function getRepartidor($correo) {
+        //Obtenemos la informacion del producto especifico:
+        $pdo = database::connect();
+
+        //Utilizamos parametros para la consulta:
+        $sql = "select * from repartidor where correoRepartidor=?";
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos y pasamos los parametros para la consulta:
+        $consulta->execute(array($correo));
+        //Extraemos el registro especifico:
+        $dato = $consulta->fetch(PDO::FETCH_ASSOC);
+        //Transformamos el registro obtenido a objeto:
+        $repartidor = new Repartidor($dato['idRepartidor'], $dato['nombreRepartidor'], $dato['apellidoRepartidor'], 
+                $dato['telefonoRepartidor'], $dato['fechaNacRepartidor'], $dato['direccion'], $dato['correoRepartidor'], 
+                $dato['contrasenaRepartidor'], "repartidor");
+        database::disconnet();
+        return $repartidor;
+    }
+    public function getCliente($correo) {
+        //Obtenemos la informacion del producto especifico:
+        $pdo = database::connect();
+
+        //Utilizamos parametros para la consulta:
+        $sql = "select * from cliente where correo_Cliente=?";
+        $consulta = $pdo->prepare($sql);
+        //Ejecutamos y pasamos los parametros para la consulta:
+        $consulta->execute(array($correo));
+        //Extraemos el registro especifico:
+        $dato = $consulta->fetch(PDO::FETCH_ASSOC);
+        //Transformamos el registro obtenido a objeto:
+        $repartidor = new Repartidor($dato['id_Cliente'], $dato['nombre_Cliente'], $dato['apellido_Cliente'], 
+                $dato['telefono_Cliente'], $dato['fechaNac_Cliente'], $dato['direccion_Cliente'], $dato['correo_Cliente'], 
+                $dato['contrasena_Cliente'], "cliente");
+        database::disconnet();
+        return $repartidor;
+    }
+    
+    
+     public function actualizarUser($correo, $clave){
+        //Preparamos la conexión a la bdd:
+        $pdo=Database::connect();
+        $sql="update usuarios set correo=?, clave=? where correo=?";
+        $consulta=$pdo->prepare($sql);
+        //Ejecutamos la sentencia incluyendo a los parametros:
+        $consulta->execute(array($correo, $clave));
+         Database::disconnet();
+    }
+     public function actualizarProducto($nombreProd, $descripcionProd, $precioVenta, $cantidadProd, $idproducto){
+        //Preparamos la conexión a la bdd:
+        $pdo=Database::connect();
+        $sql="update producto set nombreProd=?, descripcionProd=?, precioProd=?, cantidadProd=? where idproducto=?";
+        $consulta=$pdo->prepare($sql);
+        //Ejecutamos la sentencia incluyendo a los parametros:
+        $consulta->execute(array($nombreProd, $descripcionProd, $precioVenta, $cantidadProd, $idproducto));
+         Database::disconnet();
+    }
+     public function actualizarPedido($estado, $idpedido){
+        //Preparamos la conexión a la bdd:
+        $pdo=Database::connect();
+        $sql="update pedido set estado=? where idpedido=?";
+        $consulta=$pdo->prepare($sql);
+        //Ejecutamos la sentencia incluyendo a los parametros:
+        $consulta->execute(array($estado, $idpedido));
+         Database::disconnet();
+    }
+     public function actualizarPedido_Rep($estado, $idpedido){
+        //Preparamos la conexión a la bdd:
+        $pdo=Database::connect();
+        $sql="update pedido_repartidor set estado=? where idpedido=?";
+        $consulta=$pdo->prepare($sql);
+        //Ejecutamos la sentencia incluyendo a los parametros:
+        $consulta->execute(array($estado, $idpedido));
+         Database::disconnet();
+    }
+     public function actualizarLocal($seccion, $nombre, $direccion, $telefono, $correo, $clave, $horario){
+        //Preparamos la conexión a la bdd:
+        $pdo=Database::connect();
+        $sql="UPDATE
+local
+INNER JOIN
+usuarios
+ON
+usuarios.correo = local.correoLocal
+SET
+local.seccion=?, local.nombreLocal=?, local.direccionLocal=?, local.telefonoLocal=?, local.correoLocal=?, local.claveLocal=?, local.horarioLocal=?, usuarios.correo=?, usuarios.clave=? WHERE
+local.correoLocal=?";
+        $consulta=$pdo->prepare($sql);
+        //Ejecutamos la sentencia incluyendo a los parametros:
+        $consulta->execute(array($seccion, $nombre, $direccion, $telefono, $correo, $clave, $horario, $correo, $clave, $correo));
+         Database::disconnet();
+    }
+    
+     public function actualizarRepartidor($nombre, $apellido, $telefono, $fechaNac, $direccion, $correo, $clave){
+        //Preparamos la conexión a la bdd:
+        $pdo=Database::connect();
+        $sql=" UPDATE
+repartidor
+INNER JOIN
+usuarios
+ON
+usuarios.correo = repartidor.correoRepartidor
+SET
+repartidor.nombreRepartidor=?, repartidor.apellidoRepartidor=?, repartidor.telefonoRepartidor=?, repartidor.fechaNacRepartidor=?, repartidor.direccion=?, repartidor.correoRepartidor=?, repartidor.contrasenaRepartidor=?, usuarios.correo=?, usuarios.clave=? WHERE
+repartidor.correoRepartidor=?";
+        $consulta=$pdo->prepare($sql);
+        //Ejecutamos la sentencia incluyendo a los parametros:
+        $consulta->execute(array($nombre, $apellido, $telefono, $fechaNac, $direccion, $correo, $clave, $correo, $clave. $correo));
+         Database::disconnet();
+    }
+     public function actualizarCliente($nombre, $apellido, $telefono, $direccion,$fechaNac, $correo, $clave){
+        //Preparamos la conexión a la bdd:
+        $pdo=Database::connect();
+        $sql=" UPDATE
+cliente
+INNER JOIN
+usuarios
+ON
+usuarios.correo = cliente.correo_Cliente
+SET
+cliente.nombre_Cliente=?, cliente.apellido_Cliente=?, cliente.telefono_Cliente=?, cliente.fechaNac_Cliente=?, cliente.direccion_Cliente=?, cliente.correo_Cliente=?, cliente.contrasena_Cliente=?, usuarios.correo=?, usuarios.clave=? WHERE
+cliente.correo_Cliente=?";
+        $consulta=$pdo->prepare($sql);
+        //Ejecutamos la sentencia incluyendo a los parametros:
+        $consulta->execute(array($nombre, $apellido, $telefono, $direccion,$fechaNac, $correo, $clave, $correo, $clave, $correo));
+         Database::disconnet();
+    }
+    
+     public function crearPedido($idPedido, $correo, $direccion, $idProducto, $idProveedor, $nombreProd, $descripcionProd, $precioVenta, $cantidadProd, $precioTotal, $fechaPedido, $estado){
+        
+        $producto=new Pedido($idPedido, $correo, $direccion, $idProducto, $idProveedor, $nombreProd, $descripcionProd, $precioVenta, $cantidadProd, $precioTotal, $fechaPedido, $estado);
+        $this->guardarPedido($producto);
+        return $producto;
+    }
+
+    public function guardarPedido($producto) {
+        $pdo = database::connect();
+        $sql = 'insert into pedido(correo, direccion, idproducto, idproveedor, nombreProd, descripcionProd, precioProd, cantidadProd, precioTotal, fechaPedido, estado) values(?,?,?,?,?,?,?,?,?,?,?)';
+        $consulta = $pdo->prepare($sql);
+        $consulta->execute(array(
+        $producto->getCorreo(),
+        $producto->getDireccion(),
+        $producto->getIdProducto(),
+        $producto->getIdLocal(),
+        $producto->getNombreProd(),
+        $producto->getDescripcionProd(),
+        $producto->getPrecioVenta(),
+        $producto->getCantidad(),
+        $producto->getPrecioTotal(),
+        $producto->getFechaPedido(),
+        $producto->getEstado())
+        );
+        database::disconnet();
+    }
+     public function crearPago($idPago, $correoCli, $tipoPago, $monto){
+        
+        $pago=new Pago($idPago, $correoCli, $tipoPago, $monto);
+        $this->guardarPago($pago);
+        return $pago;
+    }
+
+    public function guardarPago($pago) {
+        $pdo = database::connect();
+        $sql = 'INSERT INTO pago (correoCli, tipoPago, monto) VALUES(?,?,?)';
+        $consulta = $pdo->prepare($sql);
+        $consulta->execute(array(
+        $pago->getCorreo(),
+        $pago->getTipoPago(),
+        $pago->getMonto())
+        );
+        database::disconnet();
+    }
+    
+     public function crearPedido_Rep($idpedido_rep, $idPedido, $idrepartidor, $correo, $direccion, $idProducto, $idLocal, $nombreProd, $descripcionProd, $precioVenta, $cantidadProd, $precioTotal, $fechaPedido, $estado){
+        
+        $pedido=new Pedido_Repartidor($idpedido_rep, $idPedido, $idrepartidor, $correo, $direccion, $idProducto, $idLocal, $nombreProd, $descripcionProd, $precioVenta, $cantidadProd, $precioTotal, $fechaPedido, $estado);
+        $this->guardarPedido_Rep($pedido);
+        return $pedido;
+    }
+
+    public function guardarPedido_Rep($producto) {
+        $pdo = database::connect();
+        $sql = 'INSERT INTO `pedido_repartidor`(`idPedido`, `idRepartidor`, `correo`, `direccion`, `idproducto`, `idLocal`, `nombreProd`, `descripcionProd`, `precioProd`, `cantidadProd`, `precioTotal`, `fechaPedido`, `estado`) values(?,?,?,?,?,?,?,?,?,?,?,?,?)';
+        $consulta = $pdo->prepare($sql);
+        $consulta->execute(array(
+        $producto->getIdPedido(),
+        $producto->getIdRepartidor(),
+        $producto->getCorreo(),
+        $producto->getDireccion(),
+        $producto->getIdProducto(),
+        $producto->getIdLocal(),
+        $producto->getNombreProd(),
+        $producto->getDescripcionProd(),
+        $producto->getPrecioVenta(),
+        $producto->getCantidad(),
+        $producto->getPrecioTotal(),
+        $producto->getFechaPedido(),
+        $producto->getEstado(),
+        )
+        );
+        database::disconnet();
+    }
+    public function agregarCarrito($carrito, $codigoProducto) {
+        $producto = $this->getProducto($codigoProducto);
+        if (!isset($carrito)) {
+            $carrito = array(); //inicializamos el array
+        }
+        $item = new Item();
+        $item->setCodigo($producto->getCodigo());
+        $item->setNombre($producto->getNombre());
+        $item->setDescripcion($producto->getDescricion());
+        $item->setPrecio($producto->getPrecio());
+        $item->setCantidad($producto->getCantidad());
+        if ($item->getPrecio() >= 100) {
+            $item->setTieneDescuento(true);
+        } else {
+            $item->setTieneDescuento(false);
+        }
+        array_push($carrito, $item);
+        return $carrito;
+    }
+
+    public function eliminarProductoCarrito($carrito, $codigoProducto){
+        $producto = $this->getProducto($codigoProducto);
+        if (!isset($carrito)) {
+            $carrito = array(); //inicializamos el array
+        }
+        $item = new Item();
+      $item->setCodigo($producto->getIdProducto());
+      $item->setNombre($producto->getNombreProd());
+      $item->setDescripcion($producto->getDescripcionProd());
+      $item->setPrecio($producto->getPrecioVenta());
+      $item->setCantidad($producto->getCantidad());
+      if ($item->getPrecio() >= 100) {
+          $item->setTieneDescuento(true);
+      } else {
+          $item->setTieneDescuento(false);
+      }
+      $key= array_search($item, $carrito);
+      if($key!==false){
+        //  unset($item[$producto->getNombre()]); 
+          unset($carrito[$key]);
+      }
+      array_values($carrito);
+      return $carrito;  
+        }
+        
+        
+    public function valorCarrito($carrito) {
+        if (!isset($carrito)) {
+            return 0;
+        }
+        $valor = 0;
+        foreach ($carrito as $item) {
+            if ($item->getTieneDescuento() == true) {
+                $valor += $item->getPrecio() - $item->getPrecio() * 0.1;
+            } else {
+                $valor += $item->getPrecio();
+            }
+        }
+        return $valor;
+    }
+//    UPDATE
+//repartidor
+//INNER JOIN
+//usuarios
+//ON
+//usuarios.correo = repartidor.correoRepartidor
+//SET
+//repartidor.nombreRepartidor= 'Pepito', repartidor.apellidoRepartidor='Richard', repartidor.telefonoRepartidor='0973452348', repartidor.fechaNacRepartidor='1998-02-04', repartidor.direccion='otv', repartidor.correoRepartidor='pepito@gmail.com', repartidor.contrasenaRepartidor='pep123', usuarios.correo='pepito@gmail.com', usuarios.clave='pep123' WHERE
+//repartidor.correoRepartidor = 'manu20@gmail.com'
 //     public function consultarProveedores() {
 //        $pdo= database::connect();
 //        $sql='select * from proveedor';
@@ -412,4 +1184,5 @@ class ModelUsuario {
 //    }
    
 //
+     
 }

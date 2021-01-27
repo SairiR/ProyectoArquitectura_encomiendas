@@ -11,7 +11,40 @@ and open the template in the editor.
           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
               crossorigin="anonymous">
+                  <link href="../../css/Administradordiseño.css" rel="stylesheet" type="text/css"/>
+
     </head>
+    <header>
+
+                
+                <?php
+//                 session_start();
+//                $_SESSION['correo']=$correo;
+//            session_start();  
+//            include_once '../../modelos/SesionDTO.php';
+//            if (!isset($_SESSION['sesionDTO'])) {
+//                header('Location: ../../Login.php');
+//                die();
+//            }
+//            $sesionDTO = unserialize($_SESSION['sesionDTO']);
+//            if ($sesionDTO->getRol() != "repartidor") {
+//                header('Location: ../../Login.php');
+//                die();
+//            }
+             echo ' <div style="text-align: left">';
+               echo ' <img name="imglogo" id="logo"src="https://previews.123rf.com/images/siiixth/siiixth1609/siiixth160900027/64450371-ir-de-compras-en-la-tienda-de-dibujos-animados-de-tel%C3%A9fonos-inteligentes.jpg" alt="" width="50" height="50"/>';
+//                echo '<label id="lblogo"for="imglogo">Bienvenido:  ' . $sesionDTO->getCorreo() .'</label>';
+            echo '      </div>';
+            echo '<div style="text-align: right">';
+            echo '<img id="imguser"src="../../img/useradmi.png" alt="" width="60" height="60"/>';
+//            echo '<a href="../../login.php" class="btn btn-danger">Cerrar Sesion</a> <p>';      
+            echo '<label id="lblbienvenido">Bienvenido: ' .'</label></p>';
+//            echo '<label id="lblogo2"for="imglogo">'. $sesionDTO->getCorreo() .'</label>';
+            echo '</div>';
+  
+              ?>
+            
+        </header>
     <body style="background: url(../../img/dely2.jpg)">
          <div>
              </p>
@@ -54,8 +87,8 @@ and open the template in the editor.
                         echo '<tr>';
                         echo '<td>'.$fact->getCorreo().'</td>';
                         echo '<td>'.$fact->getRol().'</td>';
-                        echo "<td><a href='../../controladores/controller.php?opcion=eliminarAdmi&cedula="  . $fact->getCorreo() . "' class='btn btn-danger'>eliminar</a></td>";
-                        echo "<td><a href='../../controladores/controller.php?opcion=cargarAdmi&cedula=" . $fact->getCorreo() . "' class='btn btn-success'>actualizar</a></td>";
+                        echo "<td><a href='../../controladores/controller.php?opcion=eliminarUser&correo="  . $fact->getCorreo() . "' class='btn btn-danger'>eliminar</a></td>";
+                        //echo "<td><a href='../../controladores/controller.php?opcion=cargarAdmi&cedula=" . $fact->getCorreo() . "' class='btn btn-success'>actualizar</a></td>";
                         echo "</tr>";
                         
                     }

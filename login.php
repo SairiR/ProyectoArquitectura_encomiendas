@@ -71,6 +71,7 @@ and open the template in the editor.
     </head>
 
     <body>
+            <!--<h2>SISTEMA DE ENCOMIENDAS</h2>-->
       <div class="form-general">
             <div class="toggle">
                <span> Crear Cuenta Cliente<span/> 

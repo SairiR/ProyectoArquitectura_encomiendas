@@ -1,0 +1,1261 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 07/07/2018, 15:11:34
+    Author     : Sairi
+*/
+
+
+body{ 
+    text-align: center;
+    background: url(../img/dely2.jpg);
+    
+}
+
+
+header { 
+    background:  #3eaccf ;
+    /*border-radius:0em;*/
+    margin:0;
+    /*max-width: 1126px;*/   
+    padding: 0.25em; 
+    text-align: center;
+
+}
+
+label[id="lblogo"]{
+    color: white;
+    font-family: fantasy;
+    font-size: 30px;
+    right: 20px;
+    padding: 0.40em; 
+}
+
+.menu-lista{
+    border-bottom: 20px;
+    margin-bottom: 30px;
+   
+}
+.menu-lista ul {
+    list-style:none;
+}
+
+.menu-lista .nav > li {
+    float:left;
+}
+
+.menu-lista .nav li a {
+/*    background-color:#000;
+    color:#fff;
+    text-decoration:none;
+    padding:10px 12px;
+    */display:block;
+
+ /*float:left;*/
+    padding: .9em 1.4em;
+    text-decoration: none;
+    color: #555;
+    text-shadow: 0 2px 0 rgba(255,255,255,.5);
+    font: bold 1.1em/1 'trebuchet MS', Arial, Helvetica;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #fff #ccc #999 #eee;
+    background: #c1c1c1;
+    background: linear-gradient(#f5f5f5, #c1c1c1); 
+}
+
+.menu-lista .nav li a:hover, a:focus {
+    /*background-color:#434343;*/
+    outline: 0;
+    color: #fff;
+    text-shadow: 0 1px 0 rgba(0,0,0,.2);
+    background: #fac754;
+    background: linear-gradient(#fac754, #f8ac00);
+}
+
+.menu-lista .nav li ul {
+    display:none;
+    position:absolute;
+    min-width:140px;
+}
+
+.menu-lista .nav li:hover > ul {
+    display:block;
+}
+
+.menu-lista .nav li ul li {
+    position:relative;
+}
+
+.menu-lista .nav li ul li ul {
+    right:-140px;
+    top:0px;
+}
+
+
+
+.menu-lista a:active {
+    box-shadow: 0 0 2px 2px rgba(0,0,0,.3) inset;
+}
+
+
+.final footer {
+  /*min-height: 70px;*/
+  background-color: #F4D03F;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#191919', endColorStr='#000000');
+  border-top: 1px solid rgba(50, 50, 50, 1);
+  width: 100%;
+  position: relative;
+  clear: both;
+  margin-top: 10px;
+  padding-top: 10px;
+  overflow: visible;
+  text-align: left;
+}
+
+
+ 
+.icon-img{
+    /*position:inherit;*/
+    text-align: center;
+    padding: 0.25em;
+    border-bottom-left-radius: 30px;
+    margin-bottom: 70px;
+    /*right: 50px;*/
+}
+.icon-img label[id="lblbienvenido"]{
+    text-align: right;
+    padding: 0.25em; 
+    color: #FBFCFC  ;
+    font-family: fantasy;
+    font-size: 30px;
+     border-bottom: 4px solid #F4F6F6;
+     
+   
+
+}
+.icon-img a{
+    position: absolute;
+    float:left;
+    padding: 10px;
+    text-decoration: none;
+    color: #555;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    font: bold 1.1em/1 'trebuchet MS', Arial, Helvetica;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #fff #ccc #999 #eee;
+    background: #c1c1c1;
+    background: linear-gradient(#f5f5f5, #c1c1c1);
+    right: 540px;
+    
+    
+    
+}
+
+.icon-img a:hover, a:focus {
+
+    transform: scale(1.2);
+    
+}
+
+.icon-img img[id="fondo"]{
+    position: absolute;
+    text-align: right;
+    padding: 5px;
+    right: 50px;
+    top: 180px;
+    left: 80px;
+    background: #F4D03F;
+}
+
+p[id="p"]{
+    padding: 18px;
+}
+
+.form .contenedor-form h2[id="h2"]{
+    margin: 0 0 28px 0;
+    font-size: 20px;
+    margin-bottom: 100px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.form .contenedor-form input[type="text"],
+.form .contenedor-form input[type="password"],
+.form .contenedor-form input[type="email"] {
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.form .contenedor-form input[type="submit"] {
+    background: linear-gradient(#FFDA63,#FFB940 );
+    color: #FFF;
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 0;
+    border: none;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+/*//formulario crear admi//*/
+.crear-admi{
+    text-align: left;
+    display: flex;
+    padding: 10px 0;
+    margin: auto;
+    width: 50%;
+    max-width: 500px;
+    background: #F3F3F3;
+    /*padding: 30px;*/
+    border-radius: 5px;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.2);
+    /*background-size: cover;*/
+    background-attachment: fixed;
+}
+
+.crear-admi {
+    display: none;
+    padding: 40px;
+ 
+}
+
+.crear-admi :nth-child(2) {
+    display: block;
+}
+
+.crear-admi  input[type="text"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+.crear-admi  input[type="password"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.crear-admi  input[type="email"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.crear-admi  input[type="date"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.crear-admi label{
+    display: block;
+    padding-left: 15px;
+    text-indent: -15px;
+    font-family: monospace;
+    font-size: 15px;
+    font-weight:normal;
+    color: #1B2631;
+}
+
+.crear-admi input[type="submit"] {
+    background: linear-gradient(#FFDA63,#FFB940 );
+    color: #FFF;
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 0;
+    border: none;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+
+.crear-admi input[type="submit"]:hover {
+  transform: scale( 0.95); 
+  background: #F9A825;
+}
+
+.crear-admi h2{
+    text-align: center;
+    margin-bottom: 20px;
+    color: black;
+    font-weight: bold;
+}
+
+.crear-admiinput[type="text"]:focus {
+    border-bottom: 4px solid #BDB76B;
+}
+
+
+.crear-admi select {
+  outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FEF9E7;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*margin-bottom:*/
+    
+    font-weight:normal;
+   transition: all .5s ease;
+   margin-bottom: 30px;
+   font-size: 15px;
+   border-bottom: 4px solid #BDB76B;
+   border-radius: 5px;
+   border: 1px solid #909497;
+}
+.crear-admi select:focus{ 
+    outline: none;
+}
+.ingresar-prov select:focus{ 
+    outline: none;
+}
+
+.crear-admi input[type="file"]{
+   border-bottom: 4px solid #BDB76B;
+   border-radius: 5px;
+   border: 1px solid #909497;
+   border-bottom: 20px;
+   padding: 10px 15px;
+}
+
+
+.listar-admi select {
+  outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FEF9E7;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*margin-bottom:*/
+    
+    font-weight:normal;
+   transition: all .5s ease;
+   margin-bottom: 30px;
+   font-size: 15px;
+   border-bottom: 4px solid #BDB76B;
+   border-radius: 5px;
+   border: 1px solid #909497;
+}
+.listar-admi select:focus{ 
+    outline: none;
+}
+.listar-admi select:focus{ 
+    outline: none;
+}
+
+/*formulario crear producto*/
+
+.ingresar-prod{
+    text-align: left;
+    display: flex;
+    padding: 10px 0;
+    margin: auto;
+    width: 50%;
+    max-width: 500px;
+    background: #F3F3F3;
+    /*padding: 30px;*/
+    border-radius: 5px;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.2);
+    /*background-size: cover;*/
+    background-attachment: fixed;
+}
+
+.ingresar-prod {
+    display: none;
+    padding: 40px;
+ 
+}
+
+.ingresar-prod :nth-child(2) {
+    display: block;
+}
+
+.ingresar-prod  input[type="text"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.ingresar-prod label{
+    display: block;
+    padding-left: 15px;
+    text-indent: -15px;
+    font-family: monospace;
+    font-size: 15px;
+    font-weight:normal;
+    color: #1B2631;
+}
+
+
+.ingresar-prod input[type="submit"] {
+    background: linear-gradient(#FFDA63,#FFB940 );
+    color: #FFF;
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 0;
+    border: none;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+
+
+.ingresar-prod input[type="submit"]:hover {
+  transform: scale( 0.95); 
+  background: #F9A825;
+}
+
+.ingresar-prod h2{
+    text-align: center;
+    margin-bottom: 20px;
+    color: black;
+    font-weight: bold;
+}
+
+.ingresar-prod input[type="text"]:focus {
+    border-bottom: 4px solid #BDB76B;
+}
+
+
+.ingresar-prod select {
+  outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FEF9E7;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*margin-bottom:*/
+    
+    font-weight:normal;
+   transition: all .5s ease;
+   margin-bottom: 30px;
+   font-size: 15px;
+   border-bottom: 4px solid #BDB76B;
+   border-radius: 5px;
+   border: 1px solid #909497;
+}
+
+.ingresar-prod select:focus{ 
+    outline: none;
+}
+
+
+.ingresar-prod input[type="file"]{
+   border-bottom: 4px solid #BDB76B;
+   border-radius: 5px;
+   border: 1px solid #909497;
+   border-bottom: 20px;
+   padding: 10px 15px;
+}
+
+
+/*//formulario crear admi//*/
+.actualizar-admi{
+    text-align: left;
+    display: flex;
+    padding: 10px 0;
+    margin: auto;
+    width: 50%;
+    max-width: 500px;
+    background: #F3F3F3;
+    /*padding: 30px;*/
+    border-radius: 5px;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.2);
+    /*background-size: cover;*/
+    background-attachment: fixed;
+}
+
+.actualizar-admi {
+    display: none;
+    padding: 40px;
+ 
+}
+
+.actualizar-admi :nth-child(2) {
+    display: block;
+}
+
+.actualizar-admi  input[type="text"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+.actualizar-admi input[type="password"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.actualizar-admi  input[type="email"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.actualizar-admi  input[type="date"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.actualizar-admi label{
+    display: block;
+    padding-left: 15px;
+    text-indent: -15px;
+    font-family: monospace;
+    font-size: 15px;
+    font-weight:normal;
+    color: #1B2631;
+}
+
+.actualizar-admi input[type="submit"] {
+    background: linear-gradient(#FFDA63,#FFB940 );
+    color: #FFF;
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 0;
+    border: none;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+
+.actualizar-admi input[type="submit"]:hover {
+  transform: scale( 0.95); 
+  background: #F9A825;
+}
+
+.actualizar-admi h2{
+    text-align: center;
+    margin-bottom: 20px;
+    color: black;
+    font-weight: bold;
+}
+
+.actualizar-admiinput[type="text"]:focus {
+    border-bottom: 4px solid #BDB76B;
+}
+
+
+.actualizar-admi select {
+  outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FEF9E7;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*margin-bottom:*/
+    
+    font-weight:normal;
+   transition: all .5s ease;
+   margin-bottom: 30px;
+   font-size: 15px;
+   border-bottom: 4px solid #BDB76B;
+   border-radius: 5px;
+   border: 1px solid #909497;
+}
+.actualizar-admi select:focus{ 
+    outline: none;
+}
+.actualizar-admi select:focus{ 
+    outline: none;
+}
+
+.actualizar-admi input[type="file"]{
+   border-bottom: 4px solid #BDB76B;
+   border-radius: 5px;
+   border: 1px solid #909497;
+   border-bottom: 20px;
+   padding: 10px 15px;
+}
+
+/*formulario crear producto*/
+
+.ingresar-rep{
+    text-align: left;
+    display: flex;
+    padding: 10px 0;
+    margin: auto;
+    width: 50%;
+    max-width: 500px;
+    background: #F3F3F3;
+    /*padding: 30px;*/
+    border-radius: 5px;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.2);
+    /*background-size: cover;*/
+    background-attachment: fixed;
+}
+
+.ingresar-rep {
+    display: none;
+    padding: 40px;
+ 
+}
+
+.ingresar-rep :nth-child(2) {
+    display: block;
+}
+
+.ingresar-rep  input[type="text"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.ingresar-rep  input[type="date"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.ingresar-rep  input[type="email"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.ingresar-rep  input[type="password"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.ingresar-rep label{
+    display: block;
+    padding-left: 15px;
+    text-indent: -15px;
+    font-family: monospace;
+    font-size: 15px;
+    font-weight:normal;
+    color: #1B2631;
+}
+
+
+.ingresar-rep input[type="submit"] {
+    background: linear-gradient(#FFDA63,#FFB940 );
+    color: #FFF;
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 0;
+    border: none;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+
+
+.ingresar-rep input[type="submit"]:hover {
+  transform: scale( 0.95); 
+  background: #F9A825;
+}
+
+.ingresar-rep h2{
+    text-align: center;
+    margin-bottom: 20px;
+    color: black;
+    font-weight: bold;
+}
+
+.ingresar-rep input[type="text"]:focus {
+    border-bottom: 4px solid #BDB76B;
+}
+
+
+.ingresar-rep select {
+  outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FEF9E7;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*margin-bottom:*/
+    
+    font-weight:normal;
+   transition: all .5s ease;
+   margin-bottom: 30px;
+   font-size: 15px;
+   border-bottom: 4px solid #BDB76B;
+   border-radius: 5px;
+   border: 1px solid #909497;
+}
+
+.ingresar-rep select:focus{ 
+    outline: none;
+}
+
+
+.ingresar-rep input[type="file"]{
+   border-bottom: 4px solid #BDB76B;
+   border-radius: 5px;
+   border: 1px solid #909497;
+   border-bottom: 20px;
+   padding: 10px 15px;
+}
+
+/*formulario crear proveedor*/
+
+.ingresar-prov{
+    text-align: left;
+    display: flex;
+    padding: 10px 0;
+    margin: auto;
+    width: 50%;
+    max-width: 500px;
+    background: #F3F3F3;
+    /*padding: 30px;*/
+    border-radius: 5px;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.2);
+    /*background-size: cover;*/
+    background-attachment: fixed;
+}
+
+.ingresar-prov {
+    display: none;
+    padding: 40px;
+ 
+}
+
+.ingresar-prov :nth-child(2) {
+    display: block;
+}
+
+.ingresar-prov  input[type="text"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+.ingresar-prov  input[type="email"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.ingresar-prov  input[type="password"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.ingresar-prov label{
+    display: block;
+    padding-left: 15px;
+    text-indent: -15px;
+    font-family: monospace;
+    font-size: 15px;
+    font-weight:normal;
+    color: #1B2631;
+}
+
+.ingresar-prov input[type="submit"] {
+    background: linear-gradient(#FFDA63,#FFB940 );
+    color: #FFF;
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 0;
+    border: none;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+
+.ingresar-prov input[type="submit"]:hover {
+  transform: scale( 0.95); 
+  background: #F9A825;
+}
+
+.ingresar-prov h2{
+    text-align: center;
+    margin-bottom: 20px;
+    color: black;
+    font-weight: bold;
+}
+
+.ingresar-prov input[type="text"]:focus {
+    border-bottom: 4px solid #BDB76B;
+}
+
+
+.ingresar-prov select {
+  outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FEF9E7;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*margin-bottom:*/
+    
+    font-weight:normal;
+   transition: all .5s ease;
+   margin-bottom: 30px;
+   font-size: 15px;
+   border-bottom: 4px solid #BDB76B;
+   border-radius: 5px;
+   border: 1px solid #909497;
+}
+.ingresar-prov select:focus{ 
+    outline: none;
+}
+
+.ingresar-prov input[type="file"]{
+   border-bottom: 4px solid #BDB76B;
+   border-radius: 5px;
+   border: 1px solid #909497;
+   border-bottom: 20px;
+   padding: 10px 15px;
+}
+
+
+/*formulario modificar producto*/
+
+.modificar-prod{
+    text-align: left;
+    display: flex;
+    padding: 10px 0;
+    margin: auto;
+    width: 50%;
+    max-width: 500px;
+    background: #F3F3F3;
+    /*padding: 30px;*/
+    border-radius: 5px;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.2);
+    /*background-size: cover;*/
+    background-attachment: fixed;
+}
+
+.modificar-prod {
+    display: none;
+    padding: 40px;
+ 
+}
+
+.modificar-prod :nth-child(2) {
+    display: block;
+}
+
+.modificar-prod  input[type="text"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.modificar-prod label{
+    display: block;
+    padding-left: 15px;
+    text-indent: -15px;
+    font-family: monospace;
+    font-size: 15px;
+    font-weight:normal;
+    color: #1B2631;
+}
+
+.modificar-prod input[type="submit"] {
+    background: linear-gradient(#FFDA63,#FFB940 );
+    color: #FFF;
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 0;
+    border: none;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+
+.modificar-prod input[type="submit"]:hover {
+  transform: scale( 0.95); 
+  background: #F9A825;
+}
+
+.modificar-prod h2{
+    text-align: center;
+    margin-bottom: 20px;
+    color: black;
+    font-weight: bold;
+}
+
+.modificar-prod input[type="text"]:focus {
+    border-bottom: 4px solid #BDB76B;
+}
+
+
+.modificar-prod select {
+  outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FEF9E7;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*margin-bottom:*/
+    
+    font-weight:normal;
+   transition: all .5s ease;
+   margin-bottom: 30px;
+   font-size: 15px;
+   border-bottom: 4px solid #BDB76B;
+   border-radius: 5px;
+   border: 1px solid #909497;
+}
+.modificar-prod select:focus{ 
+    outline: none;
+}
+
+.modificar-prod input[type="file"]{
+   border-bottom: 4px solid #BDB76B;
+   border-radius: 5px;
+   border: 1px solid #909497;
+   border-bottom: 20px;
+   padding: 10px 15px;
+}
+
+/* Eliminar producto */
+.eliminar-prod{
+    text-align: left;
+    display: flex;
+    padding: 10px 0;
+    margin: auto;
+    width: 50%;
+    max-width: 500px;
+    background: #F3F3F3;
+    /*padding: 30px;*/
+    border-radius: 5px;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.2);
+    /*background-size: cover;*/
+    background-attachment: fixed;
+}
+
+.eliminar-prod {
+    display: none;
+    padding: 40px;
+ 
+}
+
+.eliminar-prod :nth-child(2) {
+    display: block;
+}
+
+.eliminar-prod  input[type="text"]{
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FFFFF0;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*box-sizing: border-box;*/
+    font-size: 14px;
+    font-weight:normal;
+    transition: all .5s ease;
+}
+
+.eliminar-prod label{
+    display: block;
+    padding-left: 15px;
+    text-indent: -15px;
+    font-family: monospace;
+    font-size: 15px;
+    font-weight:normal;
+    color: #1B2631;
+}
+
+.eliminar-prod input[type="submit"] {
+    background: linear-gradient(#FFDA63,#FFB940 );
+    color: #FFF;
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 0;
+    border: none;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+
+.eliminar-prod input[type="submit"]:hover {
+  transform: scale( 0.95); 
+  background: #F9A825;
+}
+
+.eliminar-prod h2{
+    text-align: center;
+    margin-bottom: 20px;
+    color: black;
+    font-weight: bold;
+}
+
+.eliminar-prod input[type="text"]:focus {
+    border-bottom: 4px solid #BDB76B;
+}
+
+
+.eliminar-prod select {
+  outline: none;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0 0 20px 0;
+    background: #FEF9E7;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /*margin-bottom:*/
+    
+    font-weight:normal;
+   transition: all .5s ease;
+   margin-bottom: 30px;
+   font-size: 15px;
+   border-bottom: 4px solid #BDB76B;
+   border-radius: 5px;
+   border: 1px solid #909497;
+}
+.eliminar-prod select:focus{ 
+    outline: none;
+}
+
+.eliminar-prod input[type="file"]{
+   border-bottom: 4px solid #BDB76B;
+   border-radius: 5px;
+   border: 1px solid #909497;
+   border-bottom: 20px;
+   padding: 10px 15px;
+}

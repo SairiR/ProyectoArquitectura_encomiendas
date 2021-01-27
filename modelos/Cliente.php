@@ -2,6 +2,7 @@
 
 class Cliente{
 
+    private $idCliente;
     private $nombre;
     private $apellido;
     private $telefono;
@@ -12,7 +13,8 @@ class Cliente{
     private $rol;
     
 
-    function __construct($nombre, $apellido, $telefono, $direccion,$fechaNac, $correo, $clave, $rol) {
+    function __construct($idCliente, $nombre, $apellido, $telefono, $direccion,$fechaNac, $correo, $clave, $rol) {
+        $this->idCliente = $idCliente;
         $this->nombre = $nombre;
         $this->apellido = $apellido;
         $this->telefono = $telefono;
@@ -23,7 +25,15 @@ class Cliente{
         $this->rol = $rol;
     }
 
-    function getNombre() {
+    function getIdCliente() {
+        return $this->idCliente;
+    }
+
+    function setIdCliente($idCliente) {
+        $this->idCliente = $idCliente;
+    }
+
+        function getNombre() {
         return $this->nombre;
     }
 

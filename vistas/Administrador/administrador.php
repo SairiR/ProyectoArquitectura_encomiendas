@@ -70,14 +70,15 @@
 
                     </ul>-->
                 </li>
-                <li><a href="#" onclick="mostrarinprov(), ocultarinprov()">Pedidos</a></li>
+                <li><a href="../../controladores/controller.php?opcion=cargarPagPedido" onclick="mostrarinprov(), ocultarinprov()">Pedidos</a></li>
                 <li><a href="#">Reportes</a>
                     <ul>
                         <li><a href="../Administrador/ReporteAdministradores.php?opcion=consultarAdmi">Usuarios Administradores</a></li>
                         <li><a href="../Administrador/ReporteRepartidores.php?opcion=consultarRep">Repartidores</a></li>
                         <li><a href="../Administrador/ReporteLocales.php?opcion=consultarLoc">Tiendas</a></li>
                         <li><a href="../Administrador/ReporteClientes.php?opcion=consultarCli">Clientes</a></li>
-                        <li><a href="InventarioProductos.php">Inventario de Productos</a></li>
+                        <li><a href="../Administrador/nuevo.php">Nuevo</a></li>
+                        <!--<li><a href="InventarioProductos.php">Inventario de Productos</a></li>-->
                     </ul>
                 </li>
                 <!--<li><a href="registroVentas.jsp">Reporte Caja</a></li>-->
@@ -116,10 +117,12 @@
             <form name="forming" action="../../controladores/controller.php" >
                  <label for="seccion">Seccion</label>
                 <select name="seccion" required>
-                    <option value="Alimentos">Alimentos</option>
+                    <option value="Restaurant">Restaurant</option>
                     <option value="Electrodomesticos">Electrodomesticos</option>
                     <option value="Ferreteria">Ferreteria</option>
                     <option value="Medicamentos">Medicamentos</option>
+                    <option value="Cosmeticos">Cosméticos</option>
+                    <option value="Supermercado">Supermercado</option>
                     <option value="Bebidas">Bebidas</option>
                 </select>
                 <p/>
@@ -136,7 +139,15 @@
                 <input name="telefono" type="text" required maxlength="10"/>
                 </p>
                 <label for="horario">Horario Atencion</label>
-                <input name="horario" type="text" required/>
+                <select name="horario" required>
+                    <option value="Lun-Dom 8am-17pm">Lun-Dom 8am-17pm</option>
+                    <option value="Lun-Sab 8am-17pm">Lun-Sab 8am-17pm</option>
+                    <option value="Lun-Vie 8am-17pm">Lun-Vie 8am-17pm</option>
+                    <option value="Lun-Dom 8am-22pm">Lun-Dom 8am-22pm</option>
+                    <option value="Lun-Dom 8am-22pm">Lun-Dom 8am-22pm</option>
+                    <option value="Lun-Dom 8am-17pm">Lun-Dom 8am-17pm</option>
+                </select>
+                <!--<input name="horario" type="text" required/>-->
                 </p>
                 <label for="correo">Correo Electronico</label>
                 <input name="correo" type="email" required />
